@@ -1,4 +1,4 @@
-Import socket
+import socket
 import tqdm
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
