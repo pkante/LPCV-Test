@@ -1,35 +1,14 @@
 import socket
-import tqdm
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(("localhost", 5000))
-server.listen()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((socket.gethostname(), 1234))
 
-client, addr = server.accept()
+full_msg = ' '
+while True:
+    msg = s.recv(1024)
+    print(msg.decode("utf-8"))
+    if len(msg) <= 0:
+        break
+    full_msg += msg.decode("utf-8")
 
-file_name = client.recv(1024).decode()
-print(file_name)
-file_size = client.recv(1024).decode
-print(file_size)
-
-file = open(file_name, 'wb')
-
-file_bytes = b" "
-
-done = False
-
-progress = tqdm.tqdm(unit="B", unit_scale=True, unit_divisor=1000, total=int(file_size))
-
-while not done:
-    data = client.recv(1024)
-    if file_bytes[-5:] == b"<PranavServer>":
-        done = True
-    else:
-        file_bytes += data
-    progress.update(1024)
-
-file.write(file_bytes)
-
-file.close()
-client.close()
-server.close()
+print(full_msg)
